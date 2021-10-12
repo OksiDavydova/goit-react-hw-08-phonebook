@@ -1,0 +1,7 @@
+.message_notification {
+  color: red;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 10px;
+}

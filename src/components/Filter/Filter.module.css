@@ -1,0 +1,14 @@
+.filter_overlay {
+  border-style: outset;
+}
+.filter_label {
+  font-weight: 500;
+}
+
+.filter_input {
+  width: calc(100% / 2);
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-left: 20px;
+}
