@@ -8,6 +8,7 @@ import { ContactForm } from "./components/ContactForm/ContactForm";
 import { ContactList } from "./components/ContactList/ContactList";
 import { Filter } from "./components/Filter/Filter";
 import { Notification } from "./components/Notification/Notification";
+
 class App extends Component {
   state = {
     contacts: [
@@ -18,6 +19,23 @@ class App extends Component {
     ],
     filter: "",
   };
+  
+  componentDidMount() {
+    const localContacts = localStorage.getItem("contacts");
+    const parseContacts = JSON.parse(localContacts);
+    if (parseContacts) {
+      this.setState({ contacts: parseContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const nextContacts = this.state.contacts;
+    const prevContacts = prevState.contacts;
+
+    if (nextContacts !== prevContacts) {
+      localStorage.setItem("contacts", JSON.stringify(nextContacts));
+    }
+  }
 
   addNewContact = (addContact) => {
     const { name, number } = addContact;
@@ -57,9 +75,10 @@ class App extends Component {
     const { contacts, filter } = this.state;
     const normalizedFilter = filter.toLowerCase();
     // by name
-    return contacts.filter((contactItem) =>
+    const filterByName = contacts.filter((contactItem) =>
       contactItem.name.toLowerCase().includes(normalizedFilter)
     );
+    return filterByName;
   };
 
   onDeleteContact = (contactId) => {
@@ -69,7 +88,7 @@ class App extends Component {
   };
 
   render() {
-    const { filter, contacts } = this.state;
+    const { contacts, filter } = this.state;
     const visibleContacts = this.getContacts();
     return (
       <Container>
