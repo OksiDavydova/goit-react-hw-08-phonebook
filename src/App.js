@@ -1,5 +1,6 @@
 import "./App.css";
-import React, { Component } from "react";
+import { useState, useEffect } from "react";
+import useLocalStorage from "./components/hooks/useLocalStorage";
 import shortid from "shortid";
 import { Container } from "./components/Container/Container";
 import HeroTitle from "./components/Title/Title";
@@ -9,104 +10,71 @@ import { ContactList } from "./components/ContactList/ContactList";
 import { Filter } from "./components/Filter/Filter";
 import { Notification } from "./components/Notification/Notification";
 
-class App extends Component {
-  state = {
-    contacts: [
-      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-    ],
-    filter: "",
-  };
-  
-  componentDidMount() {
-    const localContacts = localStorage.getItem("contacts");
-    const parseContacts = JSON.parse(localContacts);
-    if (parseContacts) {
-      this.setState({ contacts: parseContacts });
-    }
-  }
+const contactsDefault = [
+  { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+  { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
+  { id: "id-3", name: "Eden Clements", number: "645-17-79" },
+  { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+];
 
-  componentDidUpdate(prevProps, prevState) {
-    const nextContacts = this.state.contacts;
-    const prevContacts = prevState.contacts;
+function App() {
+  const [contacts, setContacts] = useLocalStorage("contacts", contactsDefault);
+  const [filter, setFilter] = useState("");
 
-    if (nextContacts !== prevContacts) {
-      localStorage.setItem("contacts", JSON.stringify(nextContacts));
-    }
-  }
+  useEffect(() => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  }, [contacts]);
 
-  addNewContact = (addContact) => {
-    const { name, number } = addContact;
-    const contact = {
+  const addNewContact = ({ name, number }) => {
+    const newContact = {
       id: shortid.generate(),
       name,
       number,
     };
 
-    const { contacts } = this.state;
     const normalizedName = name.toLowerCase();
     if (
-      contacts.find(
-        (contactItem) => contactItem.name.toLowerCase() === normalizedName
-      )
+      contacts.find((contact) => contact.name.toLowerCase() === normalizedName)
     ) {
       alert(`${name} is already in contacts list`);
       return;
-    } else if (contacts.find((contactItem) => contactItem.number === number)) {
+    } else if (contacts.find((contact) => contact.number === number)) {
       alert(`${number} is already in contacts list`);
       return;
     } else {
-      this.setState(({ contacts }) => {
-        return {
-          contacts: [...contacts, contact],
-        };
-      });
+      setContacts([...contacts, newContact]);
     }
   };
 
-  onChangeFilter = ({ target }) => {
-    const filterTrim = target.value.trim();
-    this.setState({ filter: filterTrim });
-  };
+  const onChangeFilter = ({ target }) => setFilter(target.value.trim());
 
-  getContacts = () => {
-    const { contacts, filter } = this.state;
-    const normalizedFilter = filter.toLowerCase();
-    // by name
-    const filterByName = contacts.filter((contactItem) =>
-      contactItem.name.toLowerCase().includes(normalizedFilter)
+  const getContacts = () => {
+    const filterByName = contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
     );
     return filterByName;
   };
 
-  onDeleteContact = (contactId) => {
-    this.setState(({ contacts }) => ({
-      contacts: contacts.filter((contact) => contact.id !== contactId),
-    }));
+  const onDeleteContact = (id) => {
+    setContacts((contacts) => contacts.filter((contact) => contact.id !== id));
   };
 
-  render() {
-    const { contacts, filter } = this.state;
-    const visibleContacts = this.getContacts();
-    return (
-      <Container>
-        <HeroTitle title="Phonebook" />
-        <ContactForm addNewContact={this.addNewContact} />
-        <SectionTitle sectionTitle="Contacts" />
-        <Filter value={filter} onChange={this.onChangeFilter} />
-        {contacts.length > 0 ? (
-          <ContactList
-            contacts={visibleContacts}
-            handleDeleteContact={this.onDeleteContact}
-          />
-        ) : (
-          <Notification />
-        )}
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <HeroTitle title="Phonebook" />
+      <ContactForm addNewContact={addNewContact} />
+      <SectionTitle sectionTitle="Contacts" />
+      <Filter value={filter} onChange={onChangeFilter} />
+      {contacts.length > 0 ? (
+        <ContactList
+          contacts={getContacts()}
+          handleDeleteContact={(id) => onDeleteContact(id)}
+        />
+      ) : (
+        <Notification />
+      )}
+    </Container>
+  );
 }
 
 export default App;
