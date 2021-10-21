@@ -1,6 +1,6 @@
 import "./App.css";
-import { useState, useEffect } from "react";
-import useLocalStorage from "./components/hooks/useLocalStorage";
+import { useState, useMemo } from "react";
+import useLS from "./components/hooks/useLocalStorage";
 import shortid from "shortid";
 import { Container } from "./components/Container/Container";
 import HeroTitle from "./components/Title/Title";
@@ -18,12 +18,8 @@ const contactsDefault = [
 ];
 
 function App() {
-  const [contacts, setContacts] = useLocalStorage("contacts", contactsDefault);
+  const [contacts, setContacts] = useLS("contacts", contactsDefault);
   const [filter, setFilter] = useState("");
-
-  useEffect(() => {
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-  }, [contacts]);
 
   const addNewContact = ({ name, number }) => {
     const newContact = {
@@ -48,15 +44,17 @@ function App() {
 
   const onChangeFilter = ({ target }) => setFilter(target.value.trim());
 
-  const getContacts = () => {
-    const filterByName = contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
+  const getContacts = useMemo(() => {
+    let normFilter = filter.toLowerCase();
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(normFilter)
     );
-    return filterByName;
-  };
+  }, [filter, contacts]);
 
   const onDeleteContact = (id) => {
-    setContacts((contacts) => contacts.filter((contact) => contact.id !== id));
+    return setContacts((contacts) =>
+      contacts.filter((contact) => contact.id !== id)
+    );
   };
 
   return (
@@ -67,7 +65,7 @@ function App() {
       <Filter value={filter} onChange={onChangeFilter} />
       {contacts.length > 0 ? (
         <ContactList
-          contacts={getContacts()}
+          contacts={getContacts}
           handleDeleteContact={(id) => onDeleteContact(id)}
         />
       ) : (
