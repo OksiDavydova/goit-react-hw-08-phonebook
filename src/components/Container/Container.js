@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import s from "./Container.module.css";
 
-export function Container({ children }) {
+export default function Container({ children }) {
   return <div className={s.container}>{children}</div>;
 }
 
