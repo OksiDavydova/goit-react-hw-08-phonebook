@@ -1,8 +1,8 @@
 import React from "react";
 import s from "./Filter.module.css";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { changeFilter } from "../../redux/action";
+import { changeFilter } from "../../redux/actions-contacts";
 
 function Filter({ filter, onChangeFilter }) {
   return (
@@ -20,10 +20,10 @@ function Filter({ filter, onChangeFilter }) {
   );
 }
 
-// Filter.propTypes = {
-//   filter: PropTypes.string,
-//   changeFilter: PropTypes.func,
-// };
+Filter.propTypes = {
+  filter: PropTypes.string,
+  changeFilter: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
   return {

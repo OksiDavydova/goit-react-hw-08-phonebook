@@ -1,5 +1,5 @@
 import "./App.css";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 
 import Container from "./components/Container/Container";
 import HeroTitle from "./components/Title/Title";
@@ -13,11 +13,13 @@ function App() {
     <Container>
       <HeroTitle title="Phonebook" />
       <ContactForm />
-      <SectionTitle sectionTitle="Contacts" />
-      <Filter />
-      <ContactList />
+      <>
+        <SectionTitle sectionTitle="Contacts" />
+        <Filter />
+        <ContactList />
+      </>
     </Container>
   );
 }
 
-export default connect()(App);
+export default App;

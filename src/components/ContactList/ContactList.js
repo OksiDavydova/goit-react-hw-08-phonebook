@@ -3,14 +3,14 @@ import PropTypes from "prop-types";
 import s from "./ContactList.module.css";
 import { MdCall, MdOutlineDeleteOutline } from "react-icons/md";
 import { connect } from "react-redux";
-import { deleteContact } from "../../redux/action";
+import { deleteContact } from "../../redux/actions-contacts";
 import { Notification } from "../Notification/Notification";
 
 function ContactList({ contacts, onDeleteContact }) {
-  console.log(contacts);
+  // console.log(contacts);
   return (
     <>
-      {contacts ? (
+      {contacts.length > 0 ? (
         <>
           <ul className={s.contacts_list}>
             {contacts.map(({ id, name, number }) => (
@@ -62,7 +62,6 @@ const getContacts = (allContacts, filterValue) => {
 
 const mapStateToProps = (state) => ({
   contacts: getContacts(state.contacts, state.filter),
-  // ccc: state.contacts.contacts,
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import shortid from "shortid";
 import s from "./ContactForm.module.css";
 import { connect } from "react-redux";
-import { addContact } from "../../redux/action";
+import { addContact } from "../../redux/actions-contacts";
 
 function ContactForm({ addNewContact, contacts }) {
   const [name, setName] = useState("");
@@ -45,7 +45,6 @@ function ContactForm({ addNewContact, contacts }) {
     } else {
       addNewContact(newContact);
     }
-
     reset();
   };
 
@@ -98,9 +97,16 @@ function ContactForm({ addNewContact, contacts }) {
   );
 }
 
-// ContactForm.propTypes = {
-//   addNewContact: PropTypes.func.isRequired,
-// };
+ContactForm.propTypes = {
+  addNewContact: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+      number: PropTypes.string,
+    })
+  ),
+};
 
 const mapStateToProps = (state) => {
   return {
