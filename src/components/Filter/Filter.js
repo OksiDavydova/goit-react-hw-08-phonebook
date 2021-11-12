@@ -1,10 +1,13 @@
 import React from "react";
 import s from "./Filter.module.css";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { changeFilter } from "../../redux/actions-contacts";
+import { useSelector, useDispatch } from "react-redux";
+import { filterValue } from "../../redux/contacts-selector";
 
-function Filter({ filter, onChangeFilter }) {
+export default function Filter() {
+  const filter = useSelector(filterValue);
+  const dispatch = useDispatch();
+
   return (
     <div className={s.filter_overlay}>
       <label className={s.filter_label}>
@@ -12,7 +15,7 @@ function Filter({ filter, onChangeFilter }) {
         <input
           type="text"
           value={filter}
-          onChange={onChangeFilter}
+          onChange={({ target }) => dispatch(changeFilter(target.value.trim()))}
           className={s.filter_input}
         />
       </label>
@@ -20,21 +23,19 @@ function Filter({ filter, onChangeFilter }) {
   );
 }
 
-Filter.propTypes = {
-  filter: PropTypes.string,
-  changeFilter: PropTypes.func,
-};
+// Filter.propTypes = {
+//   filter: PropTypes.string,
+//   changeFilter: PropTypes.func,
+// };
 
-const mapStateToProps = (state) => {
-  return {
-    filter: state.filter,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     filter: state.filter,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onChangeFilter: (e) => dispatch(changeFilter(e.target.value.trim())),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     onChangeFilter: (e) => dispatch(changeFilter(e.target.value.trim())),
+//   };
+// };
