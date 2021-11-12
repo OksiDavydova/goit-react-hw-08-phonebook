@@ -1,14 +1,16 @@
+import actionTypes from "./actions-type";
+
 export const addContact = (obj) => ({
-  type: "ADD_CONTACT",
+  type: actionTypes.ADD,
   payload: obj,
 });
 
 export const deleteContact = (id) => ({
-  type: "DELETE_CONTACT",
-  payload: "id",
+  type: actionTypes.DELETE,
+  payload: id,
 });
 
 export const changeFilter = (value) => ({
-  type: "CHANGE_FILTER",
+  type: actionTypes.FILTER,
   payload: value,
 });

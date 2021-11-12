@@ -6,14 +6,14 @@ import { connect } from "react-redux";
 import { deleteContact } from "../../redux/action";
 import { Notification } from "../Notification/Notification";
 
-function ContactList({ ccc, onDeleteContact }) {
-  console.log(ccc);
+function ContactList({ contacts, onDeleteContact }) {
+  console.log(contacts);
   return (
     <>
-      {ccc.length > 0 ? (
+      {contacts ? (
         <>
           <ul className={s.contacts_list}>
-            {ccc.map(({ id, name, number }) => (
+            {contacts.map(({ id, name, number }) => (
               <li key={id} className={s.list_item}>
                 <p>{name}</p>
                 <a href="tel:{number}" className={s.link_to_call}>
@@ -23,7 +23,7 @@ function ContactList({ ccc, onDeleteContact }) {
                 <button
                   type="button"
                   className={s.btn_delete}
-                  onClick={(id) => onDeleteContact(id)}
+                  onClick={() => onDeleteContact(id)}
                 >
                   Delete <MdOutlineDeleteOutline />
                 </button>
@@ -48,6 +48,7 @@ ContactList.propTypes = {
   ).isRequired,
   onDeleteContact: PropTypes.func.isRequired,
 };
+
 const getContacts = (allContacts, filterValue) => {
   let normFilter = filterValue.toLowerCase();
 
@@ -59,12 +60,10 @@ const getContacts = (allContacts, filterValue) => {
   return allContacts;
 };
 
-const mapStateToProps = ({ contacts, filter }) => {
-  return {
-    ccc: getContacts(contacts, filter),
-    // ccc: state.contacts,
-  };
-};
+const mapStateToProps = (state) => ({
+  contacts: getContacts(state.contacts, state.filter),
+  // ccc: state.contacts.contacts,
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -73,16 +72,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
-
-// const getContacts = useMemo(() => {
-//   let normFilter = filter.toLowerCase();
-//   return contacts.filter((contact) =>
-//     contact.name.toLowerCase().includes(normFilter)
-//   );
-// }, [filter, contacts]);
-
-// const onDeleteContact = (id) => {
-//   return setContacts((contacts) =>
-//     contacts.filter((contact) => contact.id !== id)
-//   );
-// };

@@ -1,6 +1,5 @@
 import "./App.css";
 import { connect } from "react-redux";
-import * as actions from "./redux/action";
 
 import Container from "./components/Container/Container";
 import HeroTitle from "./components/Title/Title";
@@ -21,18 +20,4 @@ function App() {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    contacts: state.contacts,
-    filter: state.filter,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onDeleteContact: (id) => dispatch(actions.deleteContact(id)),
-    onChangeFilter: (value) => dispatch(actions.changeFilter(value)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect()(App);
