@@ -5,12 +5,12 @@ import { createReducer } from "@reduxjs/toolkit";
 import defaultContacts from "./default-contacts";
 
 const contacts = {
-  item: [...defaultContacts],
+  items: [...defaultContacts],
   filter: "",
 };
 
 //?toolkit
-export const contactsReducer = createReducer(contacts.item, {
+export const itemReducer = createReducer(contacts.items, {
   [addContact]: (state, { payload }) => [...state, payload],
   [deleteContact]: (state, { payload }) =>
     state.filter((contact) => contact.id !== payload),
@@ -21,7 +21,7 @@ export const filterReducer = createReducer(contacts.filter, {
 });
 
 export default combineReducers({
-  contacts: contactsReducer,
+  items: itemReducer,
   filter: filterReducer,
 });
 

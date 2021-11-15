@@ -13,7 +13,7 @@ import storage from "redux-persist/lib/storage";
 import rootReducer from "./contacts-reducer";
 
 const persistConfig = {
-  key: "contacts",
+  key: "contacts/items",
   storage,
   blacklist: ["filter"],
 };
