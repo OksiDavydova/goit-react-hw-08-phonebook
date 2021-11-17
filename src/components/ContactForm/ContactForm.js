@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-// import PropTypes from "prop-types";
 import shortid from "shortid";
 import s from "./ContactForm.module.css";
-import { useSelector, useDispatch } from "react-redux";
-import { addContact } from "../../redux/actions-contacts";
-import { getContactItems } from "../../redux/contacts-selector";
+import { useCreateItemMutation, useGetItemsQuery } from "../../redux/itemsRTK";
 
 function ContactForm() {
-  const contacts = useSelector(getContactItems);
-  const dispatch = useDispatch();
+  const [createItem, { isLoading, isSuccess }] = useCreateItemMutation();
+  const { data: contacts } = useGetItemsQuery();
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
-  // console.log(contacts);
+
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     switch (name) {
@@ -31,7 +28,7 @@ function ContactForm() {
     evt.preventDefault();
 
     const newContact = {
-      id: shortid.generate(),
+      // id: shortid.generate(),
       name,
       number,
     };
@@ -46,7 +43,7 @@ function ContactForm() {
       alert(`${number} is already in contacts list`);
       return;
     } else {
-      dispatch(addContact(newContact));
+      createItem(newContact);
     }
     reset();
   };
@@ -100,27 +97,4 @@ function ContactForm() {
   );
 }
 
-// ContactForm.propTypes = {
-//   addNewContact: PropTypes.func.isRequired,
-//   contacts: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.string,
-//       name: PropTypes.string,
-//       number: PropTypes.string,
-//     })
-//   ),
-// };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     contacts: state.contacts,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     addNewContact: (contact) => dispatch(addContact(contact)),
-//   };
-// };
 export default ContactForm;
-// export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

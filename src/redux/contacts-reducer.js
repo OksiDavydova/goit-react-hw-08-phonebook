@@ -10,47 +10,17 @@ const contacts = {
 };
 
 //?toolkit
-export const itemReducer = createReducer(contacts.items, {
+const items = createReducer(contacts.items, {
   [addContact]: (state, { payload }) => [...state, payload],
   [deleteContact]: (state, { payload }) =>
     state.filter((contact) => contact.id !== payload),
 });
 
-export const filterReducer = createReducer(contacts.filter, {
+const filter = createReducer(contacts.filter, {
   [changeFilter]: (_, { payload }) => payload,
 });
 
 export default combineReducers({
-  items: itemReducer,
-  filter: filterReducer,
+  items,
+  filter,
 });
-
-//!redux
-// export const contactsReducer = (
-//   state = initialsState.contacts,
-//   { type, payload }
-// ) => {
-//   switch (type) {
-//     case actionTypes.ADD:
-//       return [...state, payload];
-
-//     case actionTypes.DELETE:
-//       return state.filter((contact) => contact.id !== payload);
-
-//     default:
-//       return state;
-//   }
-// };
-
-// export const filterReducer = (
-//   state = initialsState.filter,
-//   { type, payload }
-// ) => {
-//   switch (type) {
-//     case actionTypes.FILTER:
-//       return payload;
-
-//     default:
-//       return state;
-//   }
-// };

@@ -1,40 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { setupListeners } from "@reduxjs/toolkit/query";
 import rootReducer from "./contacts-reducer";
-
-const persistConfig = {
-  key: "contacts/items",
-  storage,
-  blacklist: ["filter"],
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+import { itemsApi } from "./itemsRTK";
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    contacts: rootReducer,
+    [itemsApi.reducerPath]: itemsApi.reducer,
+  },
   devTools: process.env.NODE_ENV === "development",
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+  middleware: (getDefaultMiddleware) => [
+    ...getDefaultMiddleware(),
+    itemsApi.middleware,
+  ],
 });
 
-export const persistor = persistStore(store);
-
-// export default { store, persistor };
-
-//!redux
-// import { createStore } from "redux";
-// import { composeWithDevTools } from "redux-devtools-extension"; // without toolkit->  const store = createStore(rootReducer, composeWithDevTools());
+setupListeners(store.dispatch);
