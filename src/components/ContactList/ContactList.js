@@ -4,36 +4,27 @@ import Notification from "../Notification/Notification";
 import ContactItem from "./contactItem";
 import { useSelector } from "react-redux";
 import { filterValue, getVisibleItems } from "../../redux/contacts-selector";
-import { useDeleteItemMutation, useGetItemsQuery } from "../../redux/itemsRTK";
+import { useGetItemsQuery } from "../../redux/itemsRTK";
+import LoaderSpinner from "../Loader-spinner/Loader-spinner";
 
 export default function ContactList() {
-  const { data: items, isFetching, isError } = useGetItemsQuery();
-  const [deleteItem] = useDeleteItemMutation();
-  console.log(items);
+  const { data: items, isError, isLoading } = useGetItemsQuery();
   const filter = useSelector(filterValue);
   const contactItems = getVisibleItems(items, filter);
 
   return (
     <>
-      {isFetching && <p>get data from server...</p>}
-      {isError && <p>Sorry!</p>}
+      {isLoading && <LoaderSpinner />}
+      {isError && <p>...:(...</p>}
+      {contactItems && contactItems.length === 0 && <Notification />}
+
       {contactItems ? (
-        <>
-          <ul className={s.contacts_list}>
-            {contactItems.map(({ id, name, number }) => (
-              <ContactItem
-                key={id}
-                id={id}
-                name={name}
-                number={number}
-                deleteItem={deleteItem}
-              />
-            ))}
-          </ul>
-        </>
-      ) : (
-        <Notification />
-      )}
+        <ul className={s.contacts_list}>
+          {contactItems.map(({ id, name, number }) => (
+            <ContactItem key={id} id={id} name={name} number={number} />
+          ))}
+        </ul>
+      ) : null}
     </>
   );
 }

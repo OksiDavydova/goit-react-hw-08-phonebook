@@ -5,11 +5,11 @@ export const itemsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://6195170f74c1bd00176c6b65.mockapi.io/api/v1",
   }),
-  tagTypes: ["Item"],
+  tagTypes: ["Items"],
   endpoints: (builder) => ({
     getItems: builder.query({
       query: () => `/items`,
-      providesTags: ["Item"],
+      providesTags: ["Items"],
     }),
     createItem: builder.mutation({
       query: (newItem) => ({
@@ -20,14 +20,14 @@ export const itemsApi = createApi({
           number: newItem.number,
         },
       }),
-      invalidatesTags: ["Item"],
+      invalidatesTags: ["Items"],
     }),
     deleteItem: builder.mutation({
       query: (id) => ({
         url: `/items/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Item"],
+      invalidatesTags: ["Items"],
     }),
   }),
 });
@@ -37,3 +37,12 @@ export const {
   useCreateItemMutation,
   useDeleteItemMutation,
 } = itemsApi;
+
+// function providesList(resultsWithIds, tagType) {
+//   return resultsWithIds
+//     ? [
+//         { type: tagType, id: "LIST" },
+//         ...resultsWithIds.map(({ id }) => ({ type: tagType, id })),
+//       ]
+//     : [{ type: tagType, id: "LIST" }];
+// }

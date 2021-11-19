@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import s from "./ContactList.module.css";
 import { MdCall, MdOutlineDeleteOutline } from "react-icons/md";
+import { useDeleteItemMutation } from "../../redux/itemsRTK";
 
-export default function ContactItem({ id, name, number, deleteItem }) {
+export default function ContactItem({ id, name, number }) {
+  const [deleteItem, { isLoading: isDeleting }] = useDeleteItemMutation();
   return (
     <li key={id} className={s.list_item}>
       <p>{name}</p>
@@ -11,12 +13,13 @@ export default function ContactItem({ id, name, number, deleteItem }) {
         <MdCall />
         {number}
       </a>
+
       <button
         type="button"
-        className={s.btn_delete}
         onClick={() => deleteItem(id)}
+        className={s.btnItem}
       >
-        <MdOutlineDeleteOutline />
+        {isDeleting ? "..." : <MdOutlineDeleteOutline />}
       </button>
     </li>
   );
@@ -26,5 +29,4 @@ ContactItem.propType = {
   id: PropTypes.string,
   name: PropTypes.string,
   number: PropTypes.string,
-  deleteItem: PropTypes.func,
 };

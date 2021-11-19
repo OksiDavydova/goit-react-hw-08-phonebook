@@ -1,96 +1,89 @@
-import React, { useState } from "react";
-import shortid from "shortid";
+import React from "react";
+import { toast } from "react-toastify";
 import s from "./ContactForm.module.css";
+import "react-toastify/dist/ReactToastify.css";
+import { useForm } from "react-hook-form";
 import { useCreateItemMutation, useGetItemsQuery } from "../../redux/itemsRTK";
 
 function ContactForm() {
-  const [createItem, { isLoading, isSuccess }] = useCreateItemMutation();
+  const [createItem, { isLoading }] = useCreateItemMutation();
   const { data: contacts } = useGetItemsQuery();
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    resetField,
+  } = useForm();
 
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
-
-      case "number":
-        setNumber(value);
-        break;
-
-      default:
-    }
-  };
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-
-    const newContact = {
-      // id: shortid.generate(),
-      name,
-      number,
-    };
-
+  const onSubmit = (data) => {
+    const { name, number } = data;
     const normalizedName = name.toLowerCase();
-    if (
-      contacts.find((contact) => contact.name.toLowerCase() === normalizedName)
-    ) {
-      alert(`${name} is already in contacts list`);
-      return;
-    } else if (contacts.find((contact) => contact.number === number)) {
-      alert(`${number} is already in contacts list`);
-      return;
+    const theFirstCondition = contacts.find(
+      (contact) => contact.name.toLowerCase() === normalizedName
+    );
+    const theSecondCondition = contacts.find(
+      (contact) => contact.number === number
+    );
+
+    if (theFirstCondition) {
+      return toast.error(`${name} is already in contacts list`);
+    } else if (theSecondCondition) {
+      return toast.error(`${number} is already in contacts list`);
     } else {
-      createItem(newContact);
+      createItem(data);
     }
-    reset();
+    resetInputField();
   };
 
-  const reset = () => {
-    setName("");
-    setNumber("");
+  const resetInputField = () => {
+    resetField("name");
+    resetField("number");
   };
-
-  const inputNameId = shortid.generate();
-  const inputNumberId = shortid.generate();
 
   return (
-    <div className={s.form_overlay}>
-      <form onSubmit={handleSubmit} className={s.form}>
-        <label htmlFor={inputNameId} className={s.label}>
+    <div className={s.formWrapper}>
+      <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
+        <label htmlFor="nameInput" className={s.label}>
           Name:
+          {errors.name?.type === "required" && (
+            <span className={s.errorMessage}> is required*</span>
+          )}
           <input
             type="text"
             className={s.input}
-            onChange={handleChange}
-            value={name}
-            name="name"
-            id={inputNameId}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-            required
+            id="nameInput"
+            {...register("name", {
+              required: true,
+              maxLength: 80,
+              pattern:
+                "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
+              title:
+                "Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п.",
+            })}
           />
         </label>
 
-        <label htmlFor={inputNumberId} className={s.label}>
+        <label htmlFor="telInput" className={s.label}>
           Number:
+          {errors.number?.type === "required" && (
+            <span className={s.errorMessage}> is required *</span>
+          )}
           <input
             type="tel"
             className={s.input}
-            onChange={handleChange}
-            value={number}
-            name="number"
-            id={inputNumberId}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-            required
+            id="telInput"
+            {...register("number", {
+              required: true,
+              maxLength: 12,
+              pattern:
+                "/+?d{1,4}?[-.s]?(?d{1,3}?)?[-.s]?d{1,4}[-.s]?d{1,4}[-.s]?d{1,9}/i",
+            })}
           />
         </label>
+
         <br />
-        <button type="submit" className={s.btn_submit}>
-          Add contact
+        <button type="submit" className={s.btnSubmit}>
+          {isLoading ? "Adding..." : "Add contact"}
         </button>
       </form>
     </div>

@@ -1,4 +1,5 @@
 import "./App.css";
+import { ToastContainer } from "react-toastify";
 // import { connect } from "react-redux";
 
 import Container from "./components/Container/Container";
@@ -10,15 +11,18 @@ import Filter from "./components/Filter/Filter";
 
 function App() {
   return (
-    <Container>
-      <HeroTitle title="Phonebook" />
-      <ContactForm />
-      <>
-        <SectionTitle sectionTitle="Contacts" />
-        <Filter />
-        <ContactList />
-      </>
-    </Container>
+    <>
+      <Container>
+        <HeroTitle title="Phonebook" />
+        <ContactForm />
+        <>
+          <SectionTitle sectionTitle="Contacts" />
+          <Filter />
+          <ContactList />
+        </>
+      </Container>
+      <ToastContainer theme="dark" autoClose={3000} />
+    </>
   );
 }
 
