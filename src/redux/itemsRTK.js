@@ -1,33 +1,33 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const itemsApi = createApi({
-  reducerPath: "itemsApi",
+  reducerPath: "ContactsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://6195170f74c1bd00176c6b65.mockapi.io/api/v1",
+    baseUrl: "https://connections-api.herokuapp.com",
   }),
-  tagTypes: ["Items"],
+  tagTypes: ["Contacts"],
   endpoints: (builder) => ({
     getItems: builder.query({
-      query: () => `/items`,
-      providesTags: ["Items"],
+      query: () => `/contacts`,
+      providesTags: ["Contacts"],
     }),
     createItem: builder.mutation({
-      query: (newItem) => ({
-        url: `/items`,
+      query: (newContact) => ({
+        url: `/contacts`,
         method: "POST",
         body: {
-          name: newItem.name,
-          number: newItem.number,
+          name: newContact.name,
+          number: newContact.number,
         },
       }),
-      invalidatesTags: ["Items"],
+      invalidatesTags: ["Contacts"],
     }),
     deleteItem: builder.mutation({
-      query: (id) => ({
-        url: `/items/${id}`,
+      query: (contactId) => ({
+        url: `/contacts/${contactId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Items"],
+      invalidatesTags: ["Contacts"],
     }),
   }),
 });

@@ -1,27 +1,29 @@
 import "./App.css";
-import { ToastContainer } from "react-toastify";
-// import { connect } from "react-redux";
-
-import Container from "./components/Container/Container";
-import HeroTitle from "./components/Title/Title";
-import SectionTitle from "./components/Title/SectionTitle/SectionTitle";
-import ContactForm from "./components/ContactForm/ContactForm";
-import ContactList from "./components/ContactList/ContactList";
-import Filter from "./components/Filter/Filter";
+import React, { Suspense, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+// import HomePage from "./view/HomePage";
+// import ContactsPage from "./view/ContactsPage";
+import { routes } from "./routes";
+import AppBar from "./components/AppBar/Appbar";
+import { useDispatch } from "react-redux";
+import { currentThunk } from "./redux/auth/auth-thunks";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(currentThunk());
+  }, [dispatch]);
+
   return (
     <>
-      <Container>
-        <HeroTitle title="Phonebook" />
-        <ContactForm />
-        <>
-          <SectionTitle sectionTitle="Contacts" />
-          <Filter />
-          <ContactList />
-        </>
-      </Container>
-      <ToastContainer theme="dark" autoClose={3000} />
+      <AppBar />
+      <Suspense fallback={<h1>Loading....</h1>}>
+        <Routes>
+          {routes.map(({ path, id, component: Component }) => (
+            <Route key={id} path={path} element={<Component />} />
+          ))}
+        </Routes>
+      </Suspense>
     </>
   );
 }
