@@ -7,7 +7,7 @@ import { filterValue, getVisibleItems } from "../../redux/contacts-selector";
 import { useGetItemsQuery } from "../../redux/itemsRTK";
 import LoaderSpinner from "../Loader-spinner/Loader-spinner";
 
-export default function ContactList() {
+export default function ContactList({ toggleModal }) {
   const { data: items, isError, isLoading } = useGetItemsQuery();
   const filter = useSelector(filterValue);
   const contactItems = getVisibleItems(items, filter);
@@ -21,7 +21,13 @@ export default function ContactList() {
       {contactItems ? (
         <ul className={s.contacts_list}>
           {contactItems.map(({ id, name, number }) => (
-            <ContactItem key={id} id={id} name={name} number={number} />
+            <ContactItem
+              key={id}
+              id={id}
+              name={name}
+              number={number}
+              toggleModal={toggleModal}
+            />
           ))}
         </ul>
       ) : null}

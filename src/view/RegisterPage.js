@@ -21,7 +21,7 @@ function RegisterPage() {
 
   const resetInputField = () => {
     resetField("name");
-    resetField("number");
+    resetField("password");
     resetField("email");
   };
 

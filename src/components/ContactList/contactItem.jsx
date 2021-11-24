@@ -1,11 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import s from "./ContactList.module.css";
-import { MdCall, MdOutlineDeleteOutline } from "react-icons/md";
+import {
+  MdCall,
+  MdOutlineDeleteOutline,
+  MdModeEditOutline,
+} from "react-icons/md";
 import { useDeleteItemMutation } from "../../redux/itemsRTK";
 
-export default function ContactItem({ id, name, number }) {
+export default function ContactItem({ id, name, number, toggleModal }) {
   const [deleteItem, { isLoading: isDeleting }] = useDeleteItemMutation();
+
   return (
     <li key={id} className={s.list_item}>
       <p>{name}</p>
@@ -13,14 +18,22 @@ export default function ContactItem({ id, name, number }) {
         <MdCall />
         {number}
       </a>
-
-      <button
-        type="button"
-        onClick={() => deleteItem(id)}
-        className={s.btnItem}
-      >
-        {isDeleting ? "..." : <MdOutlineDeleteOutline />}
-      </button>
+      <div>
+        <button
+          type="button"
+          onClick={() => deleteItem(id)}
+          className={s.btnItem}
+        >
+          {isDeleting ? "..." : <MdOutlineDeleteOutline />}
+        </button>
+        <button
+          type="button"
+          onClick={() => toggleModal()}
+          className={s.btnItem}
+        >
+          <MdModeEditOutline />
+        </button>
+      </div>
     </li>
   );
 }

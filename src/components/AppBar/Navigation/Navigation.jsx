@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import s from "./Navigation.module.css";
+import { NavContainer, NavItem } from "../AppBar.styled";
 
 const Navigation = () => (
-  <nav className={s.nav}>
+  <NavContainer>
     <NavLink
       to="/"
       style={({ isActive }) => ({
@@ -11,7 +11,7 @@ const Navigation = () => (
       })}
       end
     >
-      <span className={s.navItem}> Home</span>
+      <NavItem> Home</NavItem>
     </NavLink>
     <NavLink
       to="contacts"
@@ -19,9 +19,9 @@ const Navigation = () => (
         color: isActive ? "yellow" : "white",
       })}
     >
-      <span className={s.navItem}> Contacts</span>
+      <NavItem> Contacts</NavItem>
     </NavLink>
-  </nav>
+  </NavContainer>
 );
 
 export default Navigation;

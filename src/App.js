@@ -1,10 +1,10 @@
-import "./App.css";
+import "./App.styled.jsx";
 import React, { Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-// import HomePage from "./view/HomePage";
-// import ContactsPage from "./view/ContactsPage";
+// import { Section, Container, Heading } from "./App.styled";
 import { routes } from "./routes";
 import AppBar from "./components/AppBar/Appbar";
+
 import { useDispatch } from "react-redux";
 import { currentThunk } from "./redux/auth/auth-thunks";
 

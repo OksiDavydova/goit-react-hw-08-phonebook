@@ -1,38 +1,34 @@
 import React from "react";
-import defaultAvatar from "./default-avatar.png";
+import defaultAvatar from "./abstract.png";
 import { logoutThunk } from "../../redux/auth/auth-thunks";
-import { useDispatch } from "react-redux";
-
-const styles = {
-  container: {
-    display: "flex",
-    alignItems: "center",
-  },
-  avatar: {
-    marginRight: 4,
-  },
-  name: {
-    fontWeight: 700,
-    marginRight: 12,
-  },
-};
-// { avatar, name, onLogout }
-
-const avatar = defaultAvatar;
+import { useDispatch, useSelector } from "react-redux";
+import { getUserName } from "../../redux/auth/auth-selector";
+import {
+  AuthContainer,
+  ImgAvatar,
+  AuthWelcome,
+  UserName,
+  LogOutButton,
+} from "../AppBar/AppBar.styled";
+import { ReactComponent as LogoutIcon } from "./logoutIcon.svg";
 
 function UserMenu() {
+  const avatar = defaultAvatar;
+  const name = useSelector(getUserName);
   const dispatch = useDispatch();
   const onLogout = () => {
     dispatch(logoutThunk());
   };
   return (
-    <div style={styles.container}>
-      <img src={avatar} alt="" width="32" style={styles.avatar} />
-      <span style={styles.name}>Welcome</span>
-      <button type="button" onClick={onLogout}>
-        Logout
-      </button>
-    </div>
+    <AuthContainer>
+      <ImgAvatar src={avatar} alt="avatar" />
+      <AuthWelcome>
+        Welcome <UserName>{name}</UserName>
+      </AuthWelcome>
+      <LogOutButton type="button" onClick={onLogout}>
+        <LogoutIcon />
+      </LogOutButton>
+    </AuthContainer>
   );
 }
 

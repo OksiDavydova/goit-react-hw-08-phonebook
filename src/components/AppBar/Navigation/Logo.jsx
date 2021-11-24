@@ -1,30 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
-const logo = {
-  display: "flex",
-  alignItems: "center",
-  backgroundColor: "black",
-  padding: "15px",
-  fontWeight: "600",
-};
-
-const logoOne = {
-  color: "black",
-  backgroundColor: "yellow",
-};
-
-const logoTwo = {
-  color: "yellow",
-  backgroundColor: "black",
-  fontWeight: "300",
-};
+import { MyLogo } from "../AppBar.styled";
+import logo from "./logo.png";
 
 export default function Logo() {
+  const myLogo = logo;
   return (
-    <NavLink to="/" style={logo}>
-      <span style={logoOne}>DN</span>
-      <span style={logoTwo}>Oksi</span>
+    <NavLink to="/">
+      <MyLogo src={myLogo} />
     </NavLink>
   );
 }

@@ -22,20 +22,3 @@ export default function Filter() {
     </div>
   );
 }
-
-// Filter.propTypes = {
-//   filter: PropTypes.string,
-//   changeFilter: PropTypes.func,
-// };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     filter: state.filter,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onChangeFilter: (e) => dispatch(changeFilter(e.target.value.trim())),
-//   };
-// };

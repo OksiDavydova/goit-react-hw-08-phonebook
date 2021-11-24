@@ -3,17 +3,20 @@ import AuthNav from "./AuthNav/AuthNav";
 import Navigation from "./Navigation/Navigation";
 import UserMenu from "../UserMenu/UserMenu";
 import Logo from "./Navigation/Logo";
-import s from "./AppBar.module.css";
+
+import { Header } from "./AppBar.styled";
+import { getIsAuth } from "../../redux/auth/auth-selector";
+import { useSelector } from "react-redux";
 
 function AppBar() {
+  const isAuth = useSelector(getIsAuth);
   return (
     <>
-      <header className={s.appBar}>
+      <Header>
         <Logo />
         <Navigation />
-        <AuthNav />
-        <UserMenu />
-      </header>
+        {isAuth ? <UserMenu /> : <AuthNav />}
+      </Header>
     </>
   );
 }
