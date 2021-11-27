@@ -19,14 +19,14 @@ const AuthNav = () => (
     >
       <span style={authNavItem}>Registration</span>
     </NavLink>
-    {/* <NavLink
+    <NavLink
       to="/login"
       style={({ isActive }) => ({
         color: isActive ? "yellow" : "white",
       })}
     >
       <span style={authNavItem}>Log in</span>
-    </NavLink> */}
+    </NavLink>
   </div>
 );
 

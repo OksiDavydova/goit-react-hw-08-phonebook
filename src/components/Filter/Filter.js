@@ -1,13 +1,15 @@
 import React from "react";
-import { changeFilter } from "../../redux/actions-contacts";
+import { changeFilter } from "../../redux/contacts/filter-actions";
 import { useSelector, useDispatch } from "react-redux";
-import { filterValue } from "../../redux/contacts-selector";
+import {
+  selectFilterValue,
+  selectItemsContacts,
+} from "../../redux/contacts/contacts-selector";
 import { FilterContainer, FilterInput } from "./Filter.styled";
-import { useGetItemsQuery } from "../../redux/itemsRTK";
 
 export default function Filter() {
-  const filter = useSelector(filterValue);
-  const { data: items } = useGetItemsQuery();
+  const filter = useSelector(selectFilterValue);
+  const items = useSelector(selectItemsContacts);
   const dispatch = useDispatch();
 
   return (

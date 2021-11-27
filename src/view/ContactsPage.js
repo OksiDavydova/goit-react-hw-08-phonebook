@@ -1,25 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import ContactForm from "../components/ContactForm/ContactForm";
 import ContactList from "../components/ContactList/ContactList";
 import Filter from "../components/Filter/Filter";
-import { Modal } from "../components/Modal/Modal";
+
 import { Section } from "../App.styled";
+import { useDispatch } from "react-redux";
+import { getItemsThunk } from "../redux/contacts/contacts-thunk";
 
 function ContactsPage() {
-  const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
+  useEffect(() => {
+    dispatch(getItemsThunk());
+  }, [dispatch]);
+
   return (
     <>
       <ContactForm />
       <Section>
         <Filter />
-        <ContactList toggleModal={toggleModal} />
+        <ContactList />
       </Section>
-      {showModal && <Modal toggleModal={toggleModal} />}
 
       <ToastContainer theme="dark" autoClose={3000} />
     </>

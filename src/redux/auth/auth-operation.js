@@ -14,13 +14,6 @@ const initialState = {
   isLoading: false,
 };
 
-// user: { name: "", email: "" },
-// token: "",
-// error: null,
-// isLoading: false,
-// isAuth: false,
-// myProp: "Hello",
-
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -29,140 +22,45 @@ const authSlice = createSlice({
       state.isLoading = true;
     },
     [registerThunk.fulfilled](state, action) {
-      return {
-        ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-        isLoading: false,
-        isAuth: true,
-      };
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isLoading = false;
+      state.isAuth = true;
+      state.error = "";
     },
     [registerThunk.rejected](state, action) {
-      console.log("rejected", action);
-      return {
-        ...state,
-        isAuth: false,
-        error: action.payload.error,
-        isLoading: false,
-      };
+      state.isAuth = false;
+      state.error = action.payload;
+      state.isLoading = false;
     },
     [loginThunk.fulfilled](state, action) {
-      return {
-        ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-        isAuth: true,
-      };
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isAuth = true;
+      state.error = "";
     },
-    [logoutThunk.fulfilled](state, action) {
-      return {
-        ...state,
-        user: { name: null, email: null },
-        token: null,
-        isAuth: false,
-      };
+    [loginThunk.rejected](state, action) {
+      state.isAuth = false;
+      state.error = action.payload;
+      state.isLoading = false;
+    },
+    [logoutThunk.fulfilled](state, _) {
+      state.user = { name: null, email: null };
+      state.token = null;
+      state.isAuth = false;
+    },
+    [currentThunk.pending](state, _) {
+      state.isLoading = true;
     },
     [currentThunk.fulfilled](state, action) {
-      return {
-        ...state,
-        user: action.payload,
-        isAuth: true,
-      };
+      state.user = action.payload;
+      state.isAuth = true;
+      state.isLoading = false;
     },
-    // [registerThunk.pending](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: true,
-    //   };
-    // },
-    // [registerThunk.fulfilled](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     user: action.payload.user,
-    //     token: action.payload.token,
-    //     isAuth: true,
-    //   };
-    // },
-    // [registerThunk.rejected](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     error: action.payload,
-    //   };
-    // },
-    // [loginThunk.pending](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: true,
-    //   };
-    // },
-    // [loginThunk.fulfilled](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     user: {
-    //       name: action.payload.user.name,
-    //       email: action.payload.user.email,
-    //     },
-    //     token: action.payload.token,
-    //     isAuth: true,
-    //   };
-    // },
-    // [loginThunk.rejected](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     error: action.payload,
-    //     isAuth: false,
-    //   };
-    // },
-    // [currentThunk.pending](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: true,
-    //   };
-    // },
-    // [currentThunk.fulfilled](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     user: action.payload,
-    //     isAuth: true,
-    //   };
-    // },
-    // [currentThunk.rejected](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     error: action.payload,
-    //     isAuth: false,
-    //   };
-    // },
-    // [logoutThunk.pending](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: true,
-    //   };
-    // },
-    // [logoutThunk.fulfilled](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     user: { name: "", email: "" },
-    //     token: "",
-    //     isAuth: false,
-    //   };
-    // },
-    // [logoutThunk.rejected](state, action) {
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     error: action.payload,
-    //   };
-    // },
+    [currentThunk.pending](state, _) {
+      state.isLoading = false;
+    },
   },
 });
-// export const { renameProp } = authSlice.actions;
 
 export default authSlice.reducer;

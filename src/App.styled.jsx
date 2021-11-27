@@ -1,5 +1,12 @@
 import styled from "@emotion/styled";
 
+export const CenterContainerForLoader = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 export const Section = styled.section`
   padding-top: 20px;
   padding-bottom: 20px;
@@ -20,9 +27,18 @@ export const Container = styled.div`
 export const Title = styled.h1`
   font-size: 35px;
   font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
+export const TitleAccent = styled.span`
+  font-size: 35px;
+  font-weight: 700;
   margin-bottom: 50px;
   text-align: center;
   text-transform: uppercase;
+  color: red;
 `;
 
 export const Heading = styled.h2`
@@ -145,6 +161,7 @@ export const NotifyMessage = styled.p`
 `;
 
 export const ContactsList = styled.ul`
+  position: relative;
   max-width: 400px;
   margin-top: 10px;
   margin-right: auto;
@@ -201,4 +218,11 @@ export const ItemButton = styled.button`
     background-color: black;
     border-color: yellow;
   }
+`;
+
+export const ImgFotHomePage = styled.img`
+  width: 300px;
+  margin-bottom: 20px;
+  border-bottom-left-radius: 70px;
+  border-top-right-radius: 70px;
 `;

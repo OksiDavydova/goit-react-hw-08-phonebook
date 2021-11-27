@@ -1,96 +1,55 @@
 import React from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getIsAuth } from "../redux/auth/auth-selector";
-import { useForm } from "react-hook-form";
-import { loginThunk } from "../redux/auth/auth-thunks";
-import { useDispatch } from "react-redux";
-import { MdOutlineAppRegistration } from "react-icons/md";
-
+import { getIsAuth, getUserName } from "../redux/auth/auth-selector";
+import SadPanda from "../components/Images/sad-panda.png";
+import HiPanda from "../components/Images/hiwithpanda.jpg";
 import {
   Wrapper,
   Title,
   Button,
-  Input,
-  Label,
   LabelMessage,
-  CreateAccountButton,
+  TitleAccent,
+  ImgFotHomePage,
 } from "../App.styled";
 
 function HomePage() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const isAuth = useSelector(getIsAuth);
+  const name = useSelector(getUserName);
   let navigate = useNavigate();
+  const sadPanda = SadPanda;
+  const PandaSayHi = HiPanda;
 
+  const onClickLogInrBtn = () => {
+    navigate(`/login`);
+  };
   const onClickRegisterBtn = () => {
     navigate(`/register`);
-  };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    resetField,
-  } = useForm();
-
-  const onLoginSubmit = (data) => {
-    console.log(data);
-    dispatch(loginThunk(data));
-
-    resetInputField();
-  };
-
-  const resetInputField = () => {
-    resetField("email");
-    resetField("password");
   };
 
   return (
     <>
       {isAuth ? (
         <Wrapper>
-          <Navigate to="/contacts" replace={true} />
+          <Title>
+            hi <TitleAccent>{name} !</TitleAccent>
+            <ImgFotHomePage src={PandaSayHi} alt="img for homepage" />
+          </Title>
         </Wrapper>
       ) : (
         <Wrapper>
-          <Title>Welcome to Phonebook</Title>
-          <form onSubmit={handleSubmit(onLoginSubmit)} autoComplete="off">
-            <Label htmlFor="emailInput">
-              email address:
-              {errors.email?.type === "required" && (
-                <LabelMessage> is required *</LabelMessage>
-              )}
-              <Input
-                type="text"
-                id="emailInput"
-                {...register("email", {
-                  required: true,
-                  pattern: "/^S+@S+$/i",
-                })}
-              />
-            </Label>
-
-            <Label htmlFor="password">
-              password:
-              {errors.password?.type === "required" && (
-                <LabelMessage> is required *</LabelMessage>
-              )}
-              <Input
-                type="password"
-                id="password"
-                {...register("password", {
-                  required: true,
-                  pattern: "/^S+@S+$/i",
-                })}
-              />
-            </Label>
-
-            <br />
-            <Button type="submit">Log in</Button>
-          </form>
-          <CreateAccountButton type="button" onClick={onClickRegisterBtn}>
-            Create your Account <MdOutlineAppRegistration />
-          </CreateAccountButton>
+          <Title>
+            Welcome to <TitleAccent>Phonebook</TitleAccent>
+          </Title>
+          <ImgFotHomePage src={sadPanda} alt="sad panda" />
+          <Button type="button" onClick={onClickRegisterBtn}>
+            Registration
+          </Button>
+          <LabelMessage>OR</LabelMessage>
+          <Button type="button" onClick={onClickLogInrBtn}>
+            Log in
+          </Button>
         </Wrapper>
       )}
     </>

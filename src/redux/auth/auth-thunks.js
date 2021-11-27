@@ -12,46 +12,19 @@ const token = {
   },
 };
 
-// export const registerThunk = createAsyncThunk(
-//   "users/register",
-//   async (user, { rejectWithValue }) => {
-//     try {
-//       const response = await fetch(
-//         "https://connections-api.herokuapp.com/users/signup",
-//         {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify(user),
-//         }
-//       );
-//       const data = await response.json();
-//       console.log("response", data); // { token: "", user: {name: "", email: ""}}
-//       return data; // action.payload
-//     } catch (err) {
-//       rejectWithValue({ error: err.message });
-//     }
-//   }
-// );
-
 export const registerThunk = createAsyncThunk(
   "auth/register",
   async (newUser, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("/users/signup", newUser);
-      console.log("responce", data);
-      // if (response.status === 400) {
-      //   return new Error("Error: Bad Request");
-      // }
-      // if (response.status === 200) {
-      token.set(data.token);
-
-      return data; // action.payload
-      // }
+      const response = await axios.post("/users/signup", newUser);
+      if (response.status === 400) {
+        throw new Error({ message: "tra ta ta" });
+      }
+      token.set(response.data.token);
+      return response.data; // action.payload
     } catch (err) {
-      rejectWithValue({ error: err.massage });
-      console.log("registerThunk", err);
+      const errText = err.response.statusText;
+      return rejectWithValue(errText);
     }
   }
 );
@@ -60,11 +33,12 @@ export const loginThunk = createAsyncThunk(
   "auth/login",
   async (user, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("/users/login", user);
-      token.set(data.token);
-      return data; // action.payload
+      const response = await axios.post("/users/login", user);
+      token.set(response.data.token);
+      return response.data; // action.payload
     } catch (err) {
-      rejectWithValue({ error: err.message });
+      const errText = err.response.statusText;
+      return rejectWithValue(errText);
     }
   }
 );
@@ -81,7 +55,7 @@ export const currentThunk = createAsyncThunk(
       const { data } = await axios.get("/users/current");
       return data;
     } catch (err) {
-      console.log(err.message);
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
@@ -96,29 +70,72 @@ export const logoutThunk = createAsyncThunk(
       await axios.post("/users/logout");
       token.unset();
     } catch (err) {
-      console.log(err.message);
       rejectWithValue(err.message);
     }
   }
 );
 
-// export const registerThunk = createAsyncThunk(
-//   "auth/register",
-//   async (newUser, { rejectWithValue }) => {
+//=============contacts===================
+
+export const contactsGetThunk = createAsyncThunk(
+  "contacts/get",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("/contacts");
+      if (response.status === 400) {
+        throw new Error({ message: "tra ta ta" });
+      }
+      // token.set(response.data.token);
+      return response.data; // action.payload
+    } catch (err) {
+      const errText = err.response.statusText;
+      return rejectWithValue(errText);
+    }
+  }
+);
+
+// export const loginThunk = createAsyncThunk(
+//   "auth/login",
+//   async (user, { rejectWithValue }) => {
 //     try {
-//       const response = await axios.post("/users/signup", newUser);
-//       console.log("responce", response);
-//       if (response.status === 400) {
-//         return new Error("Error: Bad Request");
-//       }
-//       if (response.status === 200) {
-//         token.set(response.data.token);
-//         console.log("registerThunk", response);
-//         return response.data; // action.payload
-//       }
+//       const response = await axios.post("/users/login", user);
+//       token.set(response.data.token);
+//       return response.data; // action.payload
 //     } catch (err) {
-//       rejectWithValue(err.response.data);
-//       console.log("registerThunk", err);
+//       const errText = err.response.statusText;
+//       return rejectWithValue(errText);
+//     }
+//   }
+// );
+
+// export const currentThunk = createAsyncThunk(
+//   "auth/current",
+//   async (_, thunkAPI) => {
+//     const state = thunkAPI.getState();
+//     const persistedToken = state.auth.token;
+//     // console.log(token);
+//     if (!persistedToken) return thunkAPI.rejectWithValue();
+//     token.set(persistedToken);
+//     try {
+//       const { data } = await axios.get("/users/current");
+//       return data;
+//     } catch (err) {
+//       return thunkAPI.rejectWithValue(err);
+//     }
+//   }
+// );
+
+// export const logoutThunk = createAsyncThunk(
+//   "auth/logout",
+//   async (_, { rejectWithValue, getState }) => {
+//     const state = getState();
+//     const token = state.auth.token;
+//     if (!token) return;
+//     try {
+//       await axios.post("/users/logout");
+//       token.unset();
+//     } catch (err) {
+//       rejectWithValue(err.message);
 //     }
 //   }
 // );
