@@ -10,6 +10,8 @@ const initialState = {
   user: { name: null, email: null },
   token: null,
   isAuth: false,
+  error: null,
+  isLoading: false,
 };
 
 // user: { name: "", email: "" },
@@ -22,21 +24,26 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  // reducers: {
-  //   renameProp: (state, action) => {
-  //     return {
-  //       ...state,
-  //       myProp: action.payload,
-  //     };
-  //   },
-  // },
   extraReducers: {
+    [registerThunk.pending](state, _) {
+      state.isLoading = true;
+    },
     [registerThunk.fulfilled](state, action) {
       return {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
+        isLoading: false,
         isAuth: true,
+      };
+    },
+    [registerThunk.rejected](state, action) {
+      console.log("rejected", action);
+      return {
+        ...state,
+        isAuth: false,
+        error: action.payload.error,
+        isLoading: false,
       };
     },
     [loginThunk.fulfilled](state, action) {

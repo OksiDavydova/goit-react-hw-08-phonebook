@@ -1,4 +1,6 @@
 import { css } from "@emotion/react";
+import bg from "./components/Images/4.jpg";
+// const bg = Bg;
 
 export const GlobalStyles = css`
   html {
@@ -16,8 +18,13 @@ export const GlobalStyles = css`
     font-family: "Sarabun", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #f2f2f2;
+    // background-color: #f2f2f2;
     min-height: 100vh;
+    color: white;
+    background-image: url(${bg});
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

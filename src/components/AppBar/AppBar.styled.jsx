@@ -24,8 +24,8 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   height: 70px;
-  color: aliceblue;
-  background-color: #080808;
+  color: #adfe2db;
+  background-color: #191815d1;
   padding: 12px 20px;
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
@@ -47,7 +47,7 @@ export const AuthWelcome = styled.span`
 `;
 
 export const UserName = styled.span`
-  color: yellow;
+  color: #7oab8f;
 `;
 
 export const LogOutButton = styled.button`

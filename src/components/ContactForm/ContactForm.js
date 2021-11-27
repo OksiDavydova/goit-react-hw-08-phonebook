@@ -1,10 +1,10 @@
 import React from "react";
 import { toast } from "react-toastify";
-import s from "./ContactForm.module.css";
+
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 import { useCreateItemMutation, useGetItemsQuery } from "../../redux/itemsRTK";
-
+import { Wrapper, Input, Label, Button, LabelMessage } from "../../App.styled";
 function ContactForm() {
   const [createItem, { isLoading }] = useCreateItemMutation();
   const { data: contacts } = useGetItemsQuery();
@@ -41,16 +41,15 @@ function ContactForm() {
   };
 
   return (
-    <div className={s.formWrapper}>
-      <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
-        <label htmlFor="nameInput" className={s.label}>
+    <Wrapper>
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+        <Label htmlFor="nameInput">
           Name:
           {errors.name?.type === "required" && (
-            <span className={s.errorMessage}> is required*</span>
+            <LabelMessage> is required*</LabelMessage>
           )}
-          <input
+          <Input
             type="text"
-            className={s.input}
             id="nameInput"
             {...register("name", {
               required: true,
@@ -61,16 +60,15 @@ function ContactForm() {
                 "Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п.",
             })}
           />
-        </label>
+        </Label>
 
-        <label htmlFor="telInput" className={s.label}>
+        <Label htmlFor="telInput">
           Number:
           {errors.number?.type === "required" && (
-            <span className={s.errorMessage}> is required *</span>
+            <LabelMessage> is required *</LabelMessage>
           )}
-          <input
+          <Input
             type="tel"
-            className={s.input}
             id="telInput"
             {...register("number", {
               required: true,
@@ -79,14 +77,12 @@ function ContactForm() {
                 "/+?d{1,4}?[-.s]?(?d{1,3}?)?[-.s]?d{1,4}[-.s]?d{1,4}[-.s]?d{1,9}/i",
             })}
           />
-        </label>
+        </Label>
 
         <br />
-        <button type="submit" className={s.btnSubmit}>
-          {isLoading ? "Adding..." : "Add contact"}
-        </button>
+        <Button type="submit">{isLoading ? "Adding..." : "Add contact"}</Button>
       </form>
-    </div>
+    </Wrapper>
   );
 }
 

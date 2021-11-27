@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 import { registerThunk } from "../redux/auth/auth-thunks";
 import { useDispatch } from "react-redux";
+import { Wrapper, Input, Label, Button, LabelMessage } from "../App.styled";
 
 function RegisterPage() {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ function RegisterPage() {
   } = useForm();
 
   const onRegisterSubmit = (data) => {
+    console.log("register-data", data);
     dispatch(registerThunk(data));
     resetInputField();
   };
@@ -27,12 +29,14 @@ function RegisterPage() {
 
   return (
     <>
-      <div>
+      <Wrapper>
         <form onSubmit={handleSubmit(onRegisterSubmit)}>
-          <label htmlFor="nameInput">
+          <Label htmlFor="nameInput">
             name:
-            {errors.name?.type === "required" && <span> is required*</span>}
-            <input
+            {errors.name?.type === "required" && (
+              <LabelMessage> is required*</LabelMessage>
+            )}
+            <Input
               type="text"
               id="nameInput"
               {...register("name", {
@@ -42,12 +46,14 @@ function RegisterPage() {
                   "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
               })}
             />
-          </label>
+          </Label>
 
-          <label htmlFor="emailInput">
+          <Label htmlFor="emailInput">
             email address:
-            {errors.number?.type === "required" && <span> is required *</span>}
-            <input
+            {errors.number?.type === "required" && (
+              <LabelMessage> is required *</LabelMessage>
+            )}
+            <Input
               type="text"
               // className={s.input}
               id="emailInput"
@@ -56,12 +62,14 @@ function RegisterPage() {
                 pattern: "/^S+@S+$/i",
               })}
             />
-          </label>
+          </Label>
 
-          <label htmlFor="password">
+          <Label htmlFor="password">
             password:
-            {errors.number?.type === "required" && <span> is required *</span>}
-            <input
+            {errors.number?.type === "required" && (
+              <LabelMessage> is required *</LabelMessage>
+            )}
+            <Input
               type="password"
               // className={s.input}
               id="password"
@@ -70,15 +78,15 @@ function RegisterPage() {
                 pattern: "/^S+@S+$/i",
               })}
             />
-          </label>
+          </Label>
 
           <br />
-          <button type="submit">
+          <Button type="submit">
             {/* {isLoading ? "Adding..." : "Add contact"} */}
             Submit
-          </button>
+          </Button>
         </form>
-      </div>
+      </Wrapper>
     </>
   );
 }

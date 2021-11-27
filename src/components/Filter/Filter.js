@@ -1,24 +1,31 @@
 import React from "react";
-import s from "./Filter.module.css";
 import { changeFilter } from "../../redux/actions-contacts";
 import { useSelector, useDispatch } from "react-redux";
 import { filterValue } from "../../redux/contacts-selector";
+import { FilterContainer, FilterInput } from "./Filter.styled";
+import { useGetItemsQuery } from "../../redux/itemsRTK";
 
 export default function Filter() {
   const filter = useSelector(filterValue);
+  const { data: items } = useGetItemsQuery();
   const dispatch = useDispatch();
 
   return (
-    <div className={s.filter_overlay}>
-      <label className={s.filter_label}>
-        Find contacts by name:
-        <input
-          type="text"
-          value={filter}
-          onChange={({ target }) => dispatch(changeFilter(target.value.trim()))}
-          className={s.filter_input}
-        />
-      </label>
-    </div>
+    <>
+      {items && items.length > 2 && (
+        <FilterContainer>
+          <label>
+            Find contacts by name:
+            <FilterInput
+              type="text"
+              value={filter}
+              onChange={({ target }) =>
+                dispatch(changeFilter(target.value.trim()))
+              }
+            />
+          </label>
+        </FilterContainer>
+      )}
+    </>
   );
 }

@@ -1,11 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-// const register = "/users/signup";
-// const login = "/users/login";
-// const logout = "/users/logout";
-// const current = "/users/current";
-
 axios.defaults.baseURL = "https://connections-api.herokuapp.com";
 
 const token = {
@@ -17,15 +12,47 @@ const token = {
   },
 };
 
+// export const registerThunk = createAsyncThunk(
+//   "users/register",
+//   async (user, { rejectWithValue }) => {
+//     try {
+//       const response = await fetch(
+//         "https://connections-api.herokuapp.com/users/signup",
+//         {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify(user),
+//         }
+//       );
+//       const data = await response.json();
+//       console.log("response", data); // { token: "", user: {name: "", email: ""}}
+//       return data; // action.payload
+//     } catch (err) {
+//       rejectWithValue({ error: err.message });
+//     }
+//   }
+// );
+
 export const registerThunk = createAsyncThunk(
   "auth/register",
-  async (newUser) => {
+  async (newUser, { rejectWithValue }) => {
     try {
       const { data } = await axios.post("/users/signup", newUser);
+      console.log("responce", data);
+      // if (response.status === 400) {
+      //   return new Error("Error: Bad Request");
+      // }
+      // if (response.status === 200) {
       token.set(data.token);
-      console.log(data);
+
       return data; // action.payload
-    } catch (err) {}
+      // }
+    } catch (err) {
+      rejectWithValue({ error: err.massage });
+      console.log("registerThunk", err);
+    }
   }
 );
 
@@ -74,3 +101,24 @@ export const logoutThunk = createAsyncThunk(
     }
   }
 );
+
+// export const registerThunk = createAsyncThunk(
+//   "auth/register",
+//   async (newUser, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.post("/users/signup", newUser);
+//       console.log("responce", response);
+//       if (response.status === 400) {
+//         return new Error("Error: Bad Request");
+//       }
+//       if (response.status === 200) {
+//         token.set(response.data.token);
+//         console.log("registerThunk", response);
+//         return response.data; // action.payload
+//       }
+//     } catch (err) {
+//       rejectWithValue(err.response.data);
+//       console.log("registerThunk", err);
+//     }
+//   }
+// );

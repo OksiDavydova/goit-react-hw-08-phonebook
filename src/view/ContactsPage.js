@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
-import Container from "../components/Container/Container";
-// import HeroTitle from "../components/Title/Title";
-// import SectionTitle from "../components/Title/SectionTitle/SectionTitle";
 import ContactForm from "../components/ContactForm/ContactForm";
 import ContactList from "../components/ContactList/ContactList";
 import Filter from "../components/Filter/Filter";
 import { Modal } from "../components/Modal/Modal";
+import { Section } from "../App.styled";
 
 function ContactsPage() {
   const [showModal, setShowModal] = useState(false);
@@ -16,18 +14,13 @@ function ContactsPage() {
   };
   return (
     <>
-      <Container>
-        <div>
-          {/* <HeroTitle title="Phonebook" /> */}
-          <ContactForm />
-        </div>
-        <div>
-          {/* <SectionTitle sectionTitle="Contacts" /> */}
-          <Filter />
-          <ContactList toggleModal={toggleModal} />
-        </div>
-        {showModal && <Modal toggleModal={toggleModal} />}
-      </Container>
+      <ContactForm />
+      <Section>
+        <Filter />
+        <ContactList toggleModal={toggleModal} />
+      </Section>
+      {showModal && <Modal toggleModal={toggleModal} />}
+
       <ToastContainer theme="dark" autoClose={3000} />
     </>
   );
