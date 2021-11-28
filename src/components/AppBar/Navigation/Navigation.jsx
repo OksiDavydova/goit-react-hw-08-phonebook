@@ -14,7 +14,7 @@ const Navigation = () => (
       <NavItem> Home</NavItem>
     </NavLink>
     <NavLink
-      to="contacts"
+      to="/contacts"
       style={({ isActive }) => ({
         color: isActive ? "yellow" : "white",
       })}

@@ -13,11 +13,13 @@ export default function ContactList() {
   const isLoadingItems = useSelector(selectIsLoadingItems);
   const contactItems = useSelector(selectVisibleContacts);
 
+  const showList = !isLoadingItems && contactItems;
+
   return (
     <>
-      {isLoadingItems && <LoaderSmall />}
       {contactItems && contactItems.length === 0 && <Notification />}
-      {contactItems && (
+      {isLoadingItems && <LoaderSmall />}
+      {showList && (
         <ContactsList>
           {contactItems.map(({ id, name, number }) => (
             <ContactItem key={id} id={id} name={name} number={number} />

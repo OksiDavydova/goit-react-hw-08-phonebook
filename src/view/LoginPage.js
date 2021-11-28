@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getIsAuth } from "../redux/auth/auth-selector";
+import { getIsError, getIsAuth } from "../redux/auth/auth-selector";
 import { useForm } from "react-hook-form";
 import { loginThunk } from "../redux/auth/auth-thunks";
 import { useDispatch } from "react-redux";
@@ -20,6 +20,7 @@ import {
 function LoginPage() {
   const dispatch = useDispatch();
   const isAuth = useSelector(getIsAuth);
+  const isError = useSelector(getIsError);
   let navigate = useNavigate();
 
   const onClickRegisterBtn = () => {
@@ -36,7 +37,6 @@ function LoginPage() {
   const onLoginSubmit = (data) => {
     console.log(data);
     dispatch(loginThunk(data));
-
     resetInputField();
   };
 
@@ -54,6 +54,7 @@ function LoginPage() {
       ) : (
         <Wrapper>
           <Title>Log in</Title>
+          {isError && <LabelMessage>Error, please try again</LabelMessage>}
           <form onSubmit={handleSubmit(onLoginSubmit)} autoComplete="off">
             <Label htmlFor="emailInput">
               email address:

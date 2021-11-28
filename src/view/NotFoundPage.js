@@ -1,7 +1,12 @@
 import React from "react";
+import { Wrapper, TitleAccent } from "../App.styled";
 
 function NotFound() {
-  return <h1>This is a 404 page</h1>;
+  return (
+    <Wrapper>
+      <TitleAccent>This is a 404 page</TitleAccent>
+    </Wrapper>
+  );
 }
 
 export default NotFound;

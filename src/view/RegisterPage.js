@@ -1,10 +1,16 @@
 import React from "react";
-// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 import { registerThunk } from "../redux/auth/auth-thunks";
 import { useDispatch, useSelector } from "react-redux";
-import { Wrapper, Input, Label, Button, LabelMessage } from "../App.styled";
+import {
+  Wrapper,
+  Input,
+  Label,
+  Button,
+  LabelMessage,
+  Title,
+} from "../App.styled";
 import { getIsError, getIsAuth } from "../redux/auth/auth-selector";
 import { Navigate } from "react-router";
 
@@ -37,6 +43,8 @@ function RegisterPage() {
         <Navigate to="/" replace={true} />
       ) : (
         <Wrapper>
+          <Title>Registration</Title>
+          {isError && <LabelMessage>Error, please try again</LabelMessage>}
           <form onSubmit={handleSubmit(onRegisterSubmit)}>
             <Label htmlFor="nameInput">
               name:

@@ -10,7 +10,7 @@ export default function LoaderSmall() {
         color="red"
         height={50}
         width={50}
-        timeout={3000} //3 secs
+        timeout={1000} //1 secs
       />
     </CenterContainerForLoader>
   );

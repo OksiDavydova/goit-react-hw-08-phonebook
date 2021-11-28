@@ -12,6 +12,7 @@ const initialState = {
   isAuth: false,
   error: null,
   isLoading: false,
+  isRefreshing: false,
 };
 
 const authSlice = createSlice({
@@ -51,14 +52,17 @@ const authSlice = createSlice({
     },
     [currentThunk.pending](state, _) {
       state.isLoading = true;
+      state.isRefreshing = true;
     },
     [currentThunk.fulfilled](state, action) {
       state.user = action.payload;
       state.isAuth = true;
       state.isLoading = false;
+      state.isRefreshing = false;
     },
     [currentThunk.pending](state, _) {
       state.isLoading = false;
+      state.isRefreshing = false;
     },
   },
 });
